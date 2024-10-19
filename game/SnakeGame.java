@@ -1,5 +1,6 @@
 package game;
 
+import javax.management.StringValueExp;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -64,22 +65,35 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
 
     public void draw(Graphics g){
         //grid
-        for(int i = 0; i<boardWidth/tileSize; i++){
-            g.drawLine(i*tileSize,0 , i*tileSize, boardHeight);
-            g.drawLine(0, i*tileSize, boardWidth, i*tileSize);
-        }
+//        for(int i = 0; i<boardWidth/tileSize; i++){
+//            g.drawLine(i*tileSize,0 , i*tileSize, boardHeight);
+//            g.drawLine(0, i*tileSize, boardWidth, i*tileSize);
+//        }
         //snake food
         g.setColor(Color.RED);
-        g.fillRect(food.x * tileSize, food.y*tileSize, tileSize, tileSize);
+        g.fill3DRect(food.x * tileSize, food.y*tileSize, tileSize, tileSize, true);
+        //g.fillRect(food.x * tileSize, food.y*tileSize, tileSize, tileSize);
 
         // for the snake
         g.setColor(Color.GREEN);
-        g.fillRect(snakeHead.x * tileSize, snakeHead.y * tileSize , tileSize, tileSize);
+        g.fill3DRect(snakeHead.x * tileSize, snakeHead.y * tileSize , tileSize, tileSize, true);
+        //g.fillRect(snakeHead.x * tileSize, snakeHead.y * tileSize , tileSize, tileSize);
 
         //snake body
         for(int i=0; i<snakeBody.size(); i++){
             Tile snakePart = snakeBody.get(i);
-            g.fillRect(snakePart.x * tileSize, snakePart.y * tileSize,tileSize, tileSize);
+            g.fill3DRect(snakePart.x * tileSize, snakePart.y * tileSize,tileSize, tileSize, true);
+            //g.fillRect(snakePart.x * tileSize, snakePart.y * tileSize,tileSize, tileSize);
+        }
+
+        //score
+        g.setFont(new Font("Arial", Font.PLAIN, 16));
+        if(gameOver){
+            g.setColor(Color.RED);
+            g.drawString("Game Over: " + String.valueOf(snakeBody.size()), tileSize - 16, tileSize);
+        }
+        else {
+            g.drawString("Score: " + String.valueOf(snakeBody.size()), tileSize-16, tileSize);
         }
     }
     public void placeFood(){
