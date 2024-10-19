@@ -1,13 +1,11 @@
 package game;
 
-import javax.management.StringValueExp;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -45,7 +43,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
         setFocusable(true);
 
         snakeHead =new Tile(5, 5);
-        snakeBody = new ArrayList<Tile>();
+        snakeBody = new ArrayList<>();
 
         food = new Tile(10,10);
         random = new Random();
@@ -64,43 +62,34 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
     }
 
     public void draw(Graphics g){
-        //grid
-//        for(int i = 0; i<boardWidth/tileSize; i++){
-//            g.drawLine(i*tileSize,0 , i*tileSize, boardHeight);
-//            g.drawLine(0, i*tileSize, boardWidth, i*tileSize);
-//        }
         //snake food
         g.setColor(Color.RED);
         g.fill3DRect(food.x * tileSize, food.y*tileSize, tileSize, tileSize, true);
-        //g.fillRect(food.x * tileSize, food.y*tileSize, tileSize, tileSize);
 
         // for the snake
         g.setColor(Color.GREEN);
         g.fill3DRect(snakeHead.x * tileSize, snakeHead.y * tileSize , tileSize, tileSize, true);
-        //g.fillRect(snakeHead.x * tileSize, snakeHead.y * tileSize , tileSize, tileSize);
 
         //snake body
-        for(int i=0; i<snakeBody.size(); i++){
-            Tile snakePart = snakeBody.get(i);
-            g.fill3DRect(snakePart.x * tileSize, snakePart.y * tileSize,tileSize, tileSize, true);
-            //g.fillRect(snakePart.x * tileSize, snakePart.y * tileSize,tileSize, tileSize);
+        for (Tile snakePart : snakeBody) {
+            g.fill3DRect(snakePart.x * tileSize, snakePart.y * tileSize, tileSize, tileSize, true);
         }
 
         //score
         g.setFont(new Font("Arial", Font.PLAIN, 16));
         if(gameOver){
             g.setColor(Color.RED);
-            g.drawString("Game Over: " + String.valueOf(snakeBody.size()), tileSize - 16, tileSize);
+            g.drawString("Game Over: " + snakeBody.size(), tileSize - 16, tileSize);
         }
         else {
-            g.drawString("Score: " + String.valueOf(snakeBody.size()), tileSize-16, tileSize);
+            g.drawString("Score: " + snakeBody.size(), tileSize-16, tileSize);
         }
     }
     public void placeFood(){
         food.x = random.nextInt(boardWidth/tileSize);
         food.y = random.nextInt(boardHeight/tileSize);
     }
-    public boolean collision( Tile tile1, Tile tile2){
+    public boolean collision(Tile tile1, Tile tile2){
         return tile1.x == tile2.x && tile1.y == tile2.y;
     }
     public void move(){
